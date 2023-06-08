@@ -1,0 +1,31 @@
+#! /usr/bin/env -S gnuplot --persist
+
+set terminal png
+#set key off
+
+set xlabel "Date"
+set ylabel "Pain"
+
+set xtics rotate by 90 offset 0,-2 out nomirror
+set ytics out nomirror
+
+set xdata time
+set format x "%y-%m"
+set timefmt "%Y-%m-%d"
+
+set style fill solid border -1
+# 1 week = 604,800 seconds.
+# Make the box 50% of its slot.
+set boxwidth 0.5 relative
+
+set rmargin 15
+set key at screen 1, graph 1
+
+set yrange [0:1]
+
+plot filename using 1:14:($14+$15+$16+$17+$18) with filledcurves below lc rgb "red" title "Extremely", \
+  "" using 1:14:($14+$15+$16+$17) with filledcurves below lc rgb "orange" title "Very", \
+  "" using 1:14:($14+$15+$16) with filledcurves below lc rgb "yellow" title "Somewhat", \
+  "" using 1:14:($14+$15) with filledcurves below lc rgb "aquamarine" title "Not very", \
+  "" using 1:14:($14) with filledcurves x lc rgb "green" title "Not at all", \
+

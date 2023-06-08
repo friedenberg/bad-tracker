@@ -1,0 +1,77 @@
+#! /usr/bin/env -S gnuplot --persist
+
+set terminal png
+#set key off
+
+set xlabel "Date"
+set ylabel "Stool Type"
+
+# set ydata time
+# set timefmt "%s"
+# set format y "%H"
+
+binwidth=1;
+bin(x)=binwidth*floor(x/binwidth);
+
+# We need a smaller y offset since only YYYY is shown.
+# set xtics rotate by 90 offset 0,-2 out nomirror
+
+# set boxwidth 0.5;
+# set style fill solid;
+# set autoscale;
+#plot "/dev/stdin" using (bin($1)):($1) smooth freq with boxes linewidth 10
+#set style fill solid border -1
+# Make the histogram boxes half the width of their slots.
+#set boxwidth 0.5 relative
+#set boxwidth 0.9 relative
+# Select histogram mode.
+#set style fill solid 1.0 border lt -1
+#plot '/dev/stdin' using 3
+#plot "/dev/stdin" using 1:3 smooth freq with boxes
+#plot "/dev/stdin" using 1:3 smooth freq with boxes
+# plot "/dev/stdin" using 1:(hour($1)) linewidth 10
+
+#set key top left outside horizontal autotitle columnhead
+
+set xtics rotate by 90 offset 0,-2 out nomirror
+set ytics out nomirror
+
+set xdata time
+set format x "%y-%m"
+set timefmt "%Y-%m"
+
+set style fill solid border -1
+# 1 week = 604,800 seconds.
+# Make the box 50% of its slot.
+set boxwidth 0.5 relative
+
+set rmargin 10
+set key at screen 1, graph 1
+
+plot filename using 1:2:($2+$3+$4+$5+$6+$7+$8) with filledcurves below lc rgb "red" title "7", \
+  "" using 1:2:($2+$3+$4+$5+$6+$7) with filledcurves below lc rgb "blue" title "6", \
+  "" using 1:2:($2+$3+$4+$5+$6) with filledcurves below lc rgb "green" title "5", \
+  "" using 1:2:($2+$3+$4+$5) with filledcurves below lc rgb "yellow" title "4", \
+  "" using 1:2:($2+$3+$4) with filledcurves below lc rgb "orange" title "3", \
+  "" using 1:2:($2+$3) with filledcurves below lc rgb "purple" title "2", \
+  "" using 1:2:2 with filledcurves x lc rgb "magenta" title "1"
+
+# plot "data.tsv" using 1:9:($9+$10+$11+$12+$13) with filledcurves below lc rgb "red" title "5", \
+#   "" using 1:9:($9+$10+$11+$12) with filledcurves below lc rgb "blue" title "4", \
+#   "" using 1:9:($9+$10+$11) with filledcurves below lc rgb "green" title "3", \
+#   "" using 1:9:($9+$10) with filledcurves below lc rgb "yellow" title "2", \
+#   "" using 1:9:($9) with filledcurves x lc rgb "orange" title "1", \
+
+# plot "data.tsv" using 1:($9+$10+$11+$12+$13) with boxes lc rgb "red", \
+#   "" using 1:($9+$10+$11+$12) with boxes lc rgb "orange", \
+#   "" using 1:($9+$10+$11) with boxes lc rgb "yellow", \
+#   "" using 1:($9+$10) with boxes lc rgb "blue", \
+#   "" using 1:9 with boxes lc rgb "green"
+
+# set style data lines
+
+# plot "data.tsv" u 1:9 lw 1 title "Not at all", \
+#  "" u 1:10 lw 1 title "Not very", \
+#  "" u 1:11 lw 1 title "Somewhat", \
+#  "" u 1:12 lw 1 title "Very", \
+#  "" u 1:13 lw 1 title "Extremely"
